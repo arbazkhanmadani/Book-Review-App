@@ -8,7 +8,7 @@ routes.post('/login', controllers.login)
 
 routes.post('/add-review/:review', authMiddleware, controllers.addReview)
 routes.post('/update-review/:review', authMiddleware, controllers.updateReview)
-routes.post('/delete-review', controllers.deleteReview)
+routes.post('/delete-review/:bookid', authMiddleware, controllers.deleteReview)
 
 
 module.exports = routes

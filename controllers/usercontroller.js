@@ -115,7 +115,7 @@ static addReview = async(req, res)=>{
 
         if( review || (review.length>=4 || review.length<=7)){
 
-            const updatedBook = await bookmodel.findOneAndUpdate( { _id: bookID }, { $set: { bookreview: review } } ).select('-_id').select('-__v')
+            const updatedBook = await bookmodel.findOneAndUpdate( { _id: bookID }, { $set: { bookreview: review } } ).select('-__v')
             console.log(updatedBook+" =================book")
             res.status(200).json({"status":"success","message":"Review added",book : updatedBook})
             
@@ -144,11 +144,11 @@ static updateReview = async(req, res, next)=>{
             console.log(updatedBook)
             res.status(200).json({"status":"success","message":"book updated",book : updatedBook})
         }else{
-            res.status(404).json({"status":"failed","message":"review cn not be empty"})
+            res.status(404).json({"status":"failed","message":"review can not be empty"})
         }
     }catch(err){
 
-    console.log(err+" ============================Error")
+    console.log(err)
     res.status(404).json({"status":"failed","message":err})
     }
 }
@@ -157,6 +157,23 @@ static updateReview = async(req, res, next)=>{
 //Deleting Review...................
 static deleteReview = async(req, res)=>{
 
+    const bookid = req.query.bookid
+      console.log(bookid)
+    try{
+
+        if(bookid){
+
+            const updatedBook = await bookmodel.findOneAndUpdate( { _id: bookid },{ $set: { bookreview: "" }},{ returnDocument: "after" }).select('-_id').select('-__v')
+            console.log(updatedBook)
+            res.status(200).json({"status":"success","message":"review deleted",book : updatedBook})
+        }else{
+            res.status(404).json({"status":"failed","message":"review can not be empty"})
+        }
+    }catch(err){
+
+    console.log(err+" Error")
+    res.status(404).json({"status":"failed","message":err})
+    }
 }
 
 
